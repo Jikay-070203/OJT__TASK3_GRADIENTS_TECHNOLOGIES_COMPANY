@@ -1,3 +1,0 @@
-README.md
-examples/README.md
-user_guide/perf_analyzer.md

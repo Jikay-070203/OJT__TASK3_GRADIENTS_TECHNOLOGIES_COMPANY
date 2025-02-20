@@ -1,0 +1,16 @@
+Step tiếp theo: deploy model
+Tutorials:
+Gọi API: tutorials/Quick_Deploy/ONNX/README.md at main · triton-inference-server/tutorials
+Hosting: server/docs/getting_started/quickstart.md at main · triton-inference-server/server
+Đo performance: server/docs/perf_benchmark/perf-analyzer-README.rst at main · triton-inference-server/server
+
+Reference: 
+GitHub - triton-inference-server/server: The Triton Inference Server provides an optimized cloud and
+GitHub - triton-inference-server/tutorials: This repository contains tutorials and examples for Trit
+
+Yêu cầu:
+down được image của triton server và hosting
+viết file config để hosting model
+dùng Tutorials link 1 để gọi API và chạy inference -> ra được kết quả là done
+push code github (có gì push nấy)
+(Extra - 10đ) Đo performance với toàn bộ config có thể chỉnh sửa từ 2)  - Tutorials Link 3
