@@ -4,7 +4,8 @@ fastapi uvicorn
 fastapi uvicorn requests
 requests
 pydantic 
-
+grpcio
+tritonclient
 
 pytesseract
 pillow
