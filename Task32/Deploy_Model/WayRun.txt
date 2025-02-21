@@ -1,3 +1,9 @@
+python -m venv .venv 
+
+.venv\Scripts\Activate
+
+python -m pip install --upgrade pip
+
 Link:https://github.com/triton-inference-server/server?tab=readme-ov-file
 
 # Step 1: Create the example model repository
@@ -6,7 +12,7 @@ cd server/docs/examples
 ./fetch_models.sh
 
 # Step 2: Launch triton from the NGC Triton container
-docker run --rm -p 8000:8000 -p 8001:8001 -p 8002:8002 -v "D:\SourceCode\ProjectOJT\OJT_TASK3_DEPLOY\server\docs\examples\model_repository:/models" nvcr.io/nvidia/tritonserver:23.10-py3 tritonserver --model-repository=/models --backend-config=onnxruntime,execution_mode=cpu
+docker run --rm -p 8000:8000 -p 8001:8001 -p 8002:8002 -v "D:\SourceCode\ProjectOJT\complete\OJT_TASK3\Task32\Deploy_Model\server\docs\examples\model_repository:/models" nvcr.io/nvidia/tritonserver:23.10-py3 tritonserver --model-repository=/models --backend-config=onnxruntime,execution_mode=cpu
 
 ==> kết quả :
 =============================
@@ -85,7 +91,9 @@ I0218 17:18:31.901567 1 grpc_server.cc:2513] Started GRPCInferenceService at 0.0
 I0218 17:18:31.902278 1 http_server.cc:4497] Started HTTPService at 0.0.0.0:8000
 I0218 17:18:31.951541 1 http_server.cc:270] Started Metrics Service at 0.0.0.0:8002
 Signal (15) received.
-
+##################################################
+##################################################
+mở terminal khác 
 ==> test server: curl http://localhost:8000/v2/health/ready
 kết quả:
                                                                                                                                                                                                                      
@@ -96,8 +104,9 @@ RawContent        : HTTP/1.1 200 OK
                     Content-Length: 0
                     Content-Type: text/plain
 
-
-+Check phụ:lên API
+##################################################
+##################################################
++Check phụ:lên API test result model
 pip install tritonclient[http]  và nếu lỗi khi chạy file triton server.py thì dung pip install tritonclient[all] & và nếu không ok thì dung conda cài
 lỗi 2 : inference failed: [400] unexpected inference output 'output_predictions' for model 'densenet_onnx'
 
@@ -106,15 +115,35 @@ lỗi 3: inference failed: [400] Input must set only one of the following fields
 lỗi 4: Inference failed: [400] [request id: <id_unknown>] unexpected shape for input 'data_0' for model 'densenet_onnx'. Expected [3,224,224], got [1,3,224,224]. 
 ALl là lỗi do file config 
 
-PS D:\SourceCode\ProjectOJT\OJT_TASK3_DEPLOY\server\docs\examples\model_repository\densenet_onnx>  python triton_inference.py
+PS D:\SourceCode\ProjectOJT\OJT_TASK3_DEPLOY\server\docs\examples\model_repository\densenet_onnx>  python api.py
 Kết quả suy luận: [ 3.48017424e-01  5.07185698e-01 -3.03041004e-03 -1.83881509e+00
   1.47627199e+00  6.43917501e-01  7.19428480e-01  2.99082100e-01
  -4.76206213e-01 -3.02548528e-01 -2.44941640e+00 -3.96347344e-01
+##################################################
+##################################################
 
 + tạo container:
- docker run -it --rm nvcr.io/nvidia/tritonserver:23.10-py3 bash
-Lệnh này tạo và chạy một container mới từ image nvcr.io/nvidia/tritonserver:23.10-py3. Nó mở một shell Bash tương tác bên trong container
-
 # Step 3: Sending an Inference Request
+Lệnh này tạo và chạy một container mới từ image nvcr.io/nvidia/tritonserver:23.10-py3. Nó mở một shell Bash tương tác bên trong container
 # In a separate console, launch the image_client example from the NGC Triton SDK container
+
+docker run -it --rm --net=host nvcr.io/nvidia/tritonserver:23.10-py3-sdk
+
+check kết quả 
+/workspace/install/bin/image_client -m densenet_onnx -c 3 -s INCEPTION /workspace/images/mug.jpg (mẫu )
+==>test chuẩn :
+docker run --rm --net=host -v "D:/SourceCode/ProjectOJT/complete/OJT_TASK3/Task32/Deploy_Model/image:/workspace/images" nvcr.io/nvidia/tritonserver:23.10-py3-sdk /workspace/install/bin/image_client -m densenet_onnx -c 3 -s INCEPTION /workspace/images/mug.jpg
+
+##################################################
+##################################################
+check kết quả 
+# Inference should return the following
+Image '/workspace/images/mug.jpg':
+    15.346230 (504) = COFFEE MUG
+    13.224326 (968) = CUP
+    10.422965 (505) = COFFEEPOT
+
+step_bonus:check performance_modol===> chạy trên cái lệnh terminal vừa tạo container 
+perf_analyzer -m tenmodel là lệnh chạy gõ trực tiếp sau  docker run -it --rm nvcr.io/nvidia/tritonserver:23.10-py3 bash
+==>root@aa1aeef1c41a:/opt/tritonserver# 
 

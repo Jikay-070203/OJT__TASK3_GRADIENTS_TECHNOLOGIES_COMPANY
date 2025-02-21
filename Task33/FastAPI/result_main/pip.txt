@@ -1,0 +1,11 @@
+uvicorn[standard]
+fastapi uvicorn
+"fastapi[standard]"
+fastapi uvicorn requests
+requests
+pydantic 
+
+
+pytesseract
+pillow
+easyocr

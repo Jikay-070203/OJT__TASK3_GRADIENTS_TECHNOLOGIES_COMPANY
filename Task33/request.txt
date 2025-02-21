@@ -1,0 +1,7 @@
+bắt đầu step tiếp theo: viết API cho model serving model
+Tutorials:
+Dùng FastAPI: https://fastapi.tiangolo.com/tutorial/first-steps/#first-steps
+
+Yêu cầu:
+Design API để gửi request inference qua API
+push code github (có gì push nấy)
