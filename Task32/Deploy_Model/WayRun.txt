@@ -1,0 +1,120 @@
+Link:https://github.com/triton-inference-server/server?tab=readme-ov-file
+
+# Step 1: Create the example model repository
+git clone -b r25.01 https://github.com/triton-inference-server/server.git
+cd server/docs/examples
+./fetch_models.sh
+
+# Step 2: Launch triton from the NGC Triton container
+docker run --rm -p 8000:8000 -p 8001:8001 -p 8002:8002 -v "D:\SourceCode\ProjectOJT\OJT_TASK3_DEPLOY\server\docs\examples\model_repository:/models" nvcr.io/nvidia/tritonserver:23.10-py3 tritonserver --model-repository=/models --backend-config=onnxruntime,execution_mode=cpu
+
+==> kết quả :
+=============================
+== Triton Inference Server ==
+=============================
+
+NVIDIA Release 23.10 (build 72127154)
+Triton Server Version 2.39.0
+
+Copyright (c) 2018-2023, NVIDIA CORPORATION & AFFILIATES.  All rights reserved.
+
+Various files include modifications (c) NVIDIA CORPORATION & AFFILIATES.  All rights reserved.
+
+This container image and its contents are governed by the NVIDIA Deep Learning Container License.
+By pulling and using the container, you accept the terms and conditions of this license:
+https://developer.nvidia.com/ngc/nvidia-deep-learning-container-license
+
++------------------+------+
+| Repository Agent | Path |
++------------------+------+
++------------------+------+
+
+I0218 17:18:31.872598 1 server.cc:619] 
++-------------+-----------------------------------------------------------------+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| Backend     | Path                                                            | Config                                                                                                                                             
+                                  |
++-------------+-----------------------------------------------------------------+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| tensorflow  | /opt/tritonserver/backends/tensorflow/libtriton_tensorflow.so   | {"cmdline":{"auto-complete-config":"true","backend-directory":"/opt/tritonserver/backends","min-compute-capability":"6.000000","default-max-batch-size":"4"}}                        |
+| onnxruntime | /opt/tritonserver/backends/onnxruntime/libtriton_onnxruntime.so | {"cmdline":{"auto-complete-config":"true","backend-directory":"/opt/tritonserver/backends","execution_mode":"cpu","min-compute-capability":"6.000000","default-max-batch-size":"4"}} |
++-------------+-----------------------------------------------------------------+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+
+I0218 17:18:31.872722 1 server.cc:662]
++----------------------+---------+--------+
+| Model                | Version | Status |
++----------------------+---------+--------+
+| densenet_onnx        | 1       | READY  |
+| inception_graphdef   | 1       | READY  |
+| simple               | 1       | READY  |
+| simple_dyna_sequence | 1       | READY  |
+| simple_identity      | 1       | READY  |
+| simple_int8          | 1       | READY  |
+| simple_sequence      | 1       | READY  |
+| simple_string        | 1       | READY  |
++----------------------+---------+--------+
+
+I0218 17:18:31.873070 1 metrics.cc:710] Collecting CPU metrics
+I0218 17:18:31.873497 1 tritonserver.cc:2458]
++----------------------------------+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| Option                           | Value                                                                                                                                                                                           
+                |
++----------------------------------+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| server_id                        | triton                                                                                                                                                                                          
+                |
+| server_version                   | 2.39.0                                                                                                                                                                                          
+                |
+| server_extensions                | classification sequence model_repository model_repository(unload_dependents) schedule_policy model_configuration system_shared_memory cuda_shared_memory binary_tensor_data parameters statistics trace logging |
+| model_repository_path[0]         | /models                                                                                                                                                                                         
+                |
+| model_control_mode               | MODE_NONE                                                                                                                                                                                       
+                |
+| strict_model_config              | 0                                                                                                                                                                                               
+                |
+| rate_limit                       | OFF                                                                                                                                                                                             
+                |
+| pinned_memory_pool_byte_size     | 268435456                                                                                                                                                                                       
+                |
+| min_supported_compute_capability | 6.0                                                                                                                                                                                             
+                |
+| strict_readiness                 | 1                                                                                                                                                                                               
+                |
+                                                                                                                                                 |
+| cache_enabled                    | 0                                                                                                                                                                                                               |
++----------------------------------+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+
+I0218 17:18:31.901567 1 grpc_server.cc:2513] Started GRPCInferenceService at 0.0.0.0:8001
+I0218 17:18:31.902278 1 http_server.cc:4497] Started HTTPService at 0.0.0.0:8000
+I0218 17:18:31.951541 1 http_server.cc:270] Started Metrics Service at 0.0.0.0:8002
+Signal (15) received.
+
+==> test server: curl http://localhost:8000/v2/health/ready
+kết quả:
+                                                                                                                                                                                                                     
+StatusCode        : 200                                                                                                                                                                                              
+StatusDescription : OK                                                                                                                                                                                               
+Content           :                                                                                                                                                                                                  
+RawContent        : HTTP/1.1 200 OK
+                    Content-Length: 0
+                    Content-Type: text/plain
+
+
++Check phụ:lên API
+pip install tritonclient[http]  và nếu lỗi khi chạy file triton server.py thì dung pip install tritonclient[all] & và nếu không ok thì dung conda cài
+lỗi 2 : inference failed: [400] unexpected inference output 'output_predictions' for model 'densenet_onnx'
+
+lỗi 3: inference failed: [400] Input must set only one of the following fields: 'data', 'binary_data_size' in 'parameters', 'shared_memory_region' in 'parameters'. But no field is set
+
+lỗi 4: Inference failed: [400] [request id: <id_unknown>] unexpected shape for input 'data_0' for model 'densenet_onnx'. Expected [3,224,224], got [1,3,224,224]. 
+ALl là lỗi do file config 
+
+PS D:\SourceCode\ProjectOJT\OJT_TASK3_DEPLOY\server\docs\examples\model_repository\densenet_onnx>  python triton_inference.py
+Kết quả suy luận: [ 3.48017424e-01  5.07185698e-01 -3.03041004e-03 -1.83881509e+00
+  1.47627199e+00  6.43917501e-01  7.19428480e-01  2.99082100e-01
+ -4.76206213e-01 -3.02548528e-01 -2.44941640e+00 -3.96347344e-01
+
++ tạo container:
+ docker run -it --rm nvcr.io/nvidia/tritonserver:23.10-py3 bash
+Lệnh này tạo và chạy một container mới từ image nvcr.io/nvidia/tritonserver:23.10-py3. Nó mở một shell Bash tương tác bên trong container
+
+# Step 3: Sending an Inference Request
+# In a separate console, launch the image_client example from the NGC Triton SDK container
+
