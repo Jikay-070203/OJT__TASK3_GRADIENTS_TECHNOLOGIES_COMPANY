@@ -11,7 +11,7 @@ import PIL.Image as Image
 app = FastAPI()
 
 # Địa chỉ Triton Server (gRPC endpoint)
-TRITON_GRPC_URL = "172.17.0.2:8001"  # Thay bằng IP:port của bạn
+TRITON_GRPC_URL = "172.17.0.2:8001"  
 MODEL_NAME = "densenet_onnx"
 
 #input/output
@@ -20,7 +20,7 @@ OUTPUT_NAME = "fc6_1"
 INPUT_WIDTH = 224
 INPUT_HEIGHT = 224
 
-# Tạo client Triton (khởi tạo một lần và tái sử dụng)
+# Tạo client Triton 
 triton_client = grpcclient.InferenceServerClient(url=TRITON_GRPC_URL)
 
 @app.post("/infer")
