@@ -1,0 +1,11 @@
+{
+  "token": "hf_xFlrSSMBoHrYlSIvKwhKsSCakCPLknODsfssssahg",
+  "models": [
+    {
+      "name": "hoanguyenthanh07/densenet_onnx",
+      "ref": "main",
+      "path": "model_repository/densenet_onnx",
+      "token": "hf_xFlrSSMBoHrYlSIvKwhKsSCakCPLknODsfssahg"
+    }
+  ]
+}

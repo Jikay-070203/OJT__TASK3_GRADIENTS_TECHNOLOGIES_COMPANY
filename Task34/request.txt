@@ -1,0 +1,5 @@
+Dùng thư viện trism để thay thế tritonclient: https://github.com/hieupth/trism
+Thay structure serving model bằng repo https://github.com/hieupth/tritonserver
+Mục đích để:
++Lưu model trên huggingface để tự động down mỗi lần chạy docker image hosting model
++Thay image tritonserver nhẹ hơn

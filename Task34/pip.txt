@@ -1,0 +1,7 @@
+pip install --upgrade numpy
+==>
+Requirement already satisfied: numpy in d:\sourcecode\projectojt\complete\ojt_task3_local\deploy\.venv\lib\site-packages (2.2.3)
+
+pip install trism
+# Or
+pip install https://github.com/hieupth/trism
